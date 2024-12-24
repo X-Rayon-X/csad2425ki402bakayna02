@@ -1,0 +1,10 @@
+C:\Users\bakay\source\repos\ClientPart_Task2\ClientPart_Task2\bin\Debug\ClientPart_Task2.exe.config
+C:\Users\bakay\source\repos\ClientPart_Task2\ClientPart_Task2\bin\Debug\ClientPart_Task2.exe
+C:\Users\bakay\source\repos\ClientPart_Task2\ClientPart_Task2\bin\Debug\ClientPart_Task2.pdb
+C:\Users\bakay\source\repos\ClientPart_Task2\ClientPart_Task2\obj\Debug\ClientPart_Task2.csproj.AssemblyReference.cache
+C:\Users\bakay\source\repos\ClientPart_Task2\ClientPart_Task2\obj\Debug\ClientPart_Task2.Form1.resources
+C:\Users\bakay\source\repos\ClientPart_Task2\ClientPart_Task2\obj\Debug\ClientPart_Task2.Properties.Resources.resources
+C:\Users\bakay\source\repos\ClientPart_Task2\ClientPart_Task2\obj\Debug\ClientPart_Task2.csproj.GenerateResource.cache
+C:\Users\bakay\source\repos\ClientPart_Task2\ClientPart_Task2\obj\Debug\ClientPart_Task2.csproj.CoreCompileInputs.cache
+C:\Users\bakay\source\repos\ClientPart_Task2\ClientPart_Task2\obj\Debug\ClientPart_Task2.exe
+C:\Users\bakay\source\repos\ClientPart_Task2\ClientPart_Task2\obj\Debug\ClientPart_Task2.pdb
