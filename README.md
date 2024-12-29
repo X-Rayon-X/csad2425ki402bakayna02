@@ -1,4 +1,4 @@
-# csad2425ki402nazarba02
+# csad2425ki402bakayna02
 
 Task 3 Гра камінь ножниці папір
 Відкрийте Arduino IDE та завантажте файл .ino, який знаходиться в папці /server.
