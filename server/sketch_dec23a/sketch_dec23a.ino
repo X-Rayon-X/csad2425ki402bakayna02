@@ -1,18 +1,13 @@
+// Arduino Code
+// This code reads a message from the serial port, modifies it, and sends it back.
 void setup() {
-  Serial.begin(9600);  // Ініціалізація серійного порту
+  Serial.begin(9600); // Default baud rate, ensure this matches the selected baud rate in the Windows Forms application
 }
 
 void loop() {
   if (Serial.available() > 0) {
-    String input = Serial.readStringUntil('\n');  // Читання рядка від комп'ютера
-    input.trim();  // Видалення зайвих пробілів
-
-    // Модифікація рядка
-    String modifiedString = input + " - modified";  
-
-    // Відправлення зміненої строки назад на комп'ютер
-    Serial.println(modifiedString);  
-
-    delay(100);  // Чекати перед наступним циклом
+    String receivedMessage = Serial.readStringUntil('\n');
+    String modifiedMessage = receivedMessage + " - modified";
+    Serial.println(modifiedMessage);
   }
 }
