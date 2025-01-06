@@ -11,45 +11,70 @@ namespace ClientPart_Task2
         public Form1()
         {
             InitializeComponent();
-            InitializeSerialPort();
+            InitializeSerialPortSettings();
         }
 
-        private void InitializeSerialPort()
+        private void InitializeSerialPortSettings()
         {
-            serialPort = new SerialPort("COM5", 9600);  // Вкажіть правильний COM порт
-            serialPort.ReadTimeout = 5000;  // Тайм-аут на читання 5000 мс (5 секунд)
-            serialPort.Open();
+            comboBoxPorts.Items.AddRange(SerialPort.GetPortNames());
+            comboBoxBaudRate.Items.AddRange(new object[] { 9600, 19200, 38400, 57600, 115200 });
+            comboBoxBaudRate.SelectedIndex = 0; // Default baud rate
+
+            buttonConnect.Click += ButtonConnect_Click;
+            buttonSend.Click += ButtonSend_Click;
         }
 
-        private void sendButton_Click(object sender, EventArgs e)
+        private void ButtonConnect_Click(object sender, EventArgs e)
         {
-            try
+            if (serialPort == null)
             {
-                // Отримуємо текст з TextBox
-                string inputText = inputTextBox.Text;
+                try
+                {
+                    string selectedPort = comboBoxPorts.SelectedItem.ToString();
+                    int baudRate = int.Parse(comboBoxBaudRate.SelectedItem.ToString());
 
-                // Відправляємо на Arduino
-                serialPort.WriteLine(inputText);
+                    serialPort = new SerialPort(selectedPort, baudRate);
+                    serialPort.DataReceived += SerialPort_DataReceived;
+                    serialPort.Open();
 
-                // Читаємо змінений текст з Arduino з тайм-аутом
-                string modifiedText = serialPort.ReadLine();
-
-                // Відображаємо змінений текст в Label
-                resultLabel.Text = "Modified Text: " + modifiedText;
+                    MessageBox.Show("Connected to " + selectedPort);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
             }
-            catch (TimeoutException)
+        }
+
+        private void ButtonSend_Click(object sender, EventArgs e)
+        {
+            if (serialPort != null && serialPort.IsOpen)
             {
-                MessageBox.Show("Error: Arduino did not respond within the timeout period.");
+                try
+                {
+                    string message = textBoxSend.Text;
+                    serialPort.WriteLine(message);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show("Error: " + ex.Message);
+                MessageBox.Show("Serial port is not connected.");
             }
+        }
+
+        private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            string receivedData = serialPort.ReadLine();
+            Invoke(new Action(() => textBoxReceived.Text = receivedData));
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (serialPort.IsOpen)
+            if (serialPort != null && serialPort.IsOpen)
             {
                 serialPort.Close();
             }
