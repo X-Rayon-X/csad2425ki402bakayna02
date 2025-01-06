@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO.Ports;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ClientPart_Task3
@@ -11,11 +12,64 @@ namespace ClientPart_Task3
         public Form1()
         {
             InitializeComponent();
-            serialPort = new SerialPort("COM5", 9600);
-            serialPort.ReadTimeout = 5000;  // 5 секунд для зчитування
-            serialPort.WriteTimeout = 5000; // 5 секунд для запису
-            serialPort.Open();
+            InitializePortSettings(); // Викликаємо метод для ініціалізації налаштувань порту
         }
+
+        private void InitializePortSettings()
+        {
+            // Додаємо доступні порти до ComboBox
+            string[] ports = SerialPort.GetPortNames();
+            portComboBox.Items.AddRange(ports);
+            if (ports.Length > 0)
+            {
+                portComboBox.SelectedIndex = 0; // Вибір за замовчуванням першого порту
+            }
+
+            // Додаємо доступні бітрейти до ComboBox
+            int[] baudRates = { 9600, 19200, 38400, 57600, 115200 };
+            baudRateComboBox.Items.AddRange(baudRates.Cast<object>().ToArray());
+            baudRateComboBox.SelectedIndex = 0; // Вибір за замовчуванням 9600
+        }
+
+        private void ConnectButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string selectedPort = portComboBox.SelectedItem?.ToString();
+                int selectedBaudRate = int.Parse(baudRateComboBox.SelectedItem?.ToString() ?? "9600");
+
+                if (!string.IsNullOrEmpty(selectedPort))
+                {
+                    serialPort = new SerialPort(selectedPort, selectedBaudRate);
+                    serialPort.ReadTimeout = 5000;  // 5 секунд для зчитування
+                    serialPort.WriteTimeout = 5000; // 5 секунд для запису
+                    serialPort.Open();
+                    MessageBox.Show($"Connected to {selectedPort} at {selectedBaudRate} baud rate.");
+                }
+                else
+                {
+                    MessageBox.Show("Please select a valid port.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error while connecting: {ex.Message}");
+            }
+        }
+
+        private void DisconnectButton_Click(object sender, EventArgs e)
+        {
+            if (serialPort.IsOpen)
+            {
+                serialPort.Close();
+                MessageBox.Show("Disconnected.");
+            }
+            else
+            {
+                MessageBox.Show("No active connection.");
+            }
+        }
+
 
         public string globalSelectedMode;
 
